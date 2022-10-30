@@ -1,9 +1,7 @@
 name: Salesforce CI/CD
 
 on:
- push:
-    branches:
-      - feature/**
+ [push]
 
 jobs:
   pipeline:
