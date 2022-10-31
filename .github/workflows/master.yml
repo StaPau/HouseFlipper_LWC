@@ -23,4 +23,4 @@ jobs:
         run: | 
           echo "current directory `pwd`"
           echo "all files: `ls -a`"
-          sfdx force:source:deploy -w 100 --ignorewarnings --manifest package.xml
+          sfdx force:source:deploy -w 100 --ignorewarnings --manifest package.xml #-l RunLocalTests
