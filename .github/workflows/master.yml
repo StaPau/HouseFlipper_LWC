@@ -25,7 +25,7 @@ jobs:
         ./sfdx-cli/install
     - name: 'Populate auth file with SFDX_URL secret'
       shell: bash
-      run: 'echo ${{ secrets.SFDX_URL}} > SFDX_QA'
+      run: 'echo ${{ secrets.SFDX_PROD_URL}} > SFDX_QA'
       
     - name: 'Authenticate to Production Org'
       run: sfdx auth:sfdxurl:store -f SFDX_QA -s -a production
