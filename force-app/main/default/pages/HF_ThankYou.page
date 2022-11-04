@@ -1,0 +1,30 @@
+<apex:page id="HF_ThankYou" showHeader="false" title="{!$Label.Thank_You_Title}">
+    <apex:slds/>
+    <style type="text/css">
+        #background {
+            background-image: url({!URLFOR($Resource.Images, 'home.jpg')});
+            background-size: cover;
+            background-repeat: no-repeat;
+            max-height: 100vh;
+            height:800px;
+        }
+
+        #message{
+            background-color: rgba(255, 255, 255, 0.7);
+            width: 90%;
+            margin:5%;
+            text-align:center;
+        }
+    </style>
+    <html>
+
+    <div id="background" class="slds-grid">
+        <div id="message" class="slds-col slds-x-small-size_1-of-1 slds-grid_align-center" style="font-size:50px; padding-top:2%;" >
+            <div class="slds-grid_align-center " style="padding-top:10%;">
+                {!$Label.Thank_You_Content}
+            </div>
+        </div>
+    </div>
+    </html>
+
+</apex:page>

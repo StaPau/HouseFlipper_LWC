@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Contact_Us</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Contact us</shortDescription>
+        <value>Contact us</value>
+    </labels>
+    <labels>
+        <fullName>First_Name</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>First Name</shortDescription>
+        <value>First Name</value>
+    </labels>
+    <labels>
+        <fullName>Last_Name</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Last Name</shortDescription>
+        <value>Last Name</value>
+    </labels>
+    <labels>
+        <fullName>Email</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>E-mail</shortDescription>
+        <value>E-mail</value>
+    </labels>
+    <labels>
+        <fullName>Phone</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Phone</shortDescription>
+        <value>Phone</value>
+    </labels>
+    <labels>
+        <fullName>Product_Of_Interest</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Product Of Interest</shortDescription>
+        <value>Product Of Interest</value>
+    </labels>
+    <labels>
+        <fullName>Apartments</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Apartments</shortDescription>
+        <value>Apartments</value>
+    </labels>
+    <labels>
+        <fullName>Business_Premises</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Business Premises</shortDescription>
+        <value>Business Premises</value>
+    </labels>
+    <labels>
+        <fullName>Company</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Company</shortDescription>
+        <value>Company</value>
+    </labels>
+    <labels>
+        <fullName>Submit</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Submit</shortDescription>
+        <value>Submit</value>
+    </labels>
+    <labels>
+        <fullName>Required</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Required</shortDescription>
+        <value>Required</value>
+    </labels>
+    <labels>
+        <fullName>Contact_Title</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Contact</shortDescription>
+        <value>Contact</value>
+    </labels>
+    <labels>
+        <fullName>Thank_You_Title</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Thank You</shortDescription>
+        <value>Thank You</value>
+    </labels>
+    <labels>
+        <fullName>Thank_You_Content</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Thank you, someone will contact you soon!</shortDescription>
+        <value>Thank you, someone will contact you soon!</value>
+    </labels>
+</CustomLabels>
