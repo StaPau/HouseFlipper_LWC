@@ -1,0 +1,92 @@
+<apex:page id="HF_WebToLead" showHeader="false" title="{!$Label.Contact_Title}">
+    <apex:slds/>
+    <html>
+    <script>
+    function getValue(){
+        const valueFromPick = document.getElementById("00N7Q00000JJIJa").value;
+        const isRequired = document.getElementById("company");
+        const companyLabel = document.getElementById("companyLabel");
+            if(valueFromPick === 'Apartments'){
+                isRequired.removeAttribute('required');
+                document.getElementById("req").remove();
+            }else{
+                isRequired.setAttribute('required', 'required');
+                companyLabel.innerHTML += "<abbr id = \"req\" class=\"slds-required\" title=\"{!$Label.Required}\">* </abbr>";
+            }
+        }
+
+        function hideRequired(){
+            document.getElementById("req").remove();
+        }
+    </script>
+    <style type="text/css">
+        #background {
+            background-image: url({!URLFOR($Resource.Images, 'home.jpg')});
+            background-size: cover;
+            background-repeat: no-repeat;
+            max-height: 100vh;
+            height:800px;
+        }
+
+        #inputForm{
+            background-color: rgba(255, 255, 255, 0.7);
+            margin: 5%;
+            margin-left:10%;
+        }
+    </style>
+        <div id="background" class="slds-grid">
+            <div id="inputForm" class="slds-col slds-x-small-size_1-of-3" >
+                <div style="font-size:35px; text-align:center; vertical-align:center;padding-top:5%">
+                    <h1>{!$Label.Contact_Us}</h1>
+                </div>
+                <div style="padding:10%; padding-top:5%">
+                <form action="{!$Setup.Post_Lead_URL__c.URL_Post__c}" method="POST">
+                    <input type="hidden" name="oid" value="{!MID($Organization.Id,0,15)}"/>
+                    <input type="hidden" name="retURL" value="{!$Site.BaseUrl}/HF_ThankYou"/>
+                    <label for="first_name" class="slds-form-element__label" style="color:black">
+                        {!$Label.First_Name} <abbr class="slds-required" title="{!$Label.Required}">* </abbr>
+                    </label>
+                    <input  id="first_name" class="slds-input" maxlength="40" name="first_name" size="20" type="text" required="required" /><br/>
+
+                    <label for="last_name" class="slds-form-element__label" style="color:black">
+                        {!$Label.Last_Name} <abbr class="slds-required" title="{!$Label.Required}">* </abbr>
+                    </label>
+                    <input  id="last_name"  class="slds-input" maxlength="80" name="last_name" size="20" type="text" required="required" /><br/>
+
+                    <label for="email" class="slds-form-element__label" style="color:black">
+                        {!$Label.Email} <abbr class="slds-required" title="{!$Label.Required}">* </abbr>
+                    </label>
+                    <input  id="email"  class="slds-input" maxlength="80" name="email" size="20" type="email" required="required" /><br/>
+
+                    <label for="phone" class="slds-form-element__label" style="color:black">
+                        {!$Label.Phone}
+                    </label>
+                    <input  id="phone"  class="slds-input" maxlength="40" name="phone" size="20" type="tel"
+                            pattern="{!$Setup.Phone_Pattern__c.Pattern__c}"
+                            placeholder="{!$Setup.Phone_Pattern__c.Placeholder__c}"/><br/>
+
+                    <label for="00N7Q00000JJIJa" class="slds-form-element__label" style="color:black">
+                        {!$Label.Product_Of_Interest} <abbr class="slds-required" title="{!$Label.Required}">* </abbr>
+                    </label>
+                    <select  id="00N7Q00000JJIJa" name="00N7Q00000JJIJa" class="slds-select" title="{!$Label.Product_Of_Interest}" required="required" onchange="getValue();"  style="padding-left:2%">
+                        <apex:actionSupport event="onchange" rerender="form"/>
+                        <option value="Apartments">{!$Label.Apartments}</option>
+                        <option value="Business Premises">{!$Label.Business_Premises}</option>
+                    </select><br/>
+
+                    <label id = "companyLabel" class="slds-form-element__label " style="color:black" for="company" onload="hideRequired();">
+                        {!$Label.Company}
+                    </label>
+                    <input  id="company"  class="slds-input" maxlength="40" name="company" size="20" type="text"  /><br/>
+
+                    <div class="slds-align_absolute-center">
+                        <button type="submit" name="submit" label="Send"
+                                title="{!$Label.Submit}" class="slds-button slds-button_brand slds-m-around_medium">{!$Label.Submit}
+                        </button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </html>
+</apex:page>
