@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="IlluminatedCloud" name="Illuminated Cloud">
       <configuration>
-        <option name="connectionName" value="houseflipper-org" />
+        <option name="connectionName" value="ScratchOrg" />
         <option name="connectionType" value="SFDX" />
       </configuration>
     </facet>
@@ -14,7 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/force-app/main/default" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/config" type="java-resource" />
     </content>
-    <orderEntry type="jdk" jdkName="IlluminatedCloud (HouseFlipper/houseflipper-org)" jdkType="IlluminatedCloud" />
+    <orderEntry type="jdk" jdkName="IlluminatedCloud (HouseFlipper/ScratchOrg)" jdkType="IlluminatedCloud" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
