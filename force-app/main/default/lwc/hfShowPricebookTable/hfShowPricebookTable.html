@@ -1,0 +1,12 @@
+<template>
+    <div style="height:75%; max-height: max-content; padding-top:2%">
+        Existing pricebooks:
+            <lightning-datatable
+                    key-field="id"
+                    columns={columns}
+                    data={data}
+                    onrowaction={handleRowAction}
+                    enable-infinite-loading>
+            </lightning-datatable>
+    </div>
+</template>
