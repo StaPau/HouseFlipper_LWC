@@ -1,25 +1,25 @@
 <template>
-    <div class="slds-card" style="padding:2%; padding-bottom:0; height:750px; max-height: max-content;">
+    <div class="slds-card" style="padding:2%; padding-bottom:0; height:750px; max-height: max-content; vertical-align:right">
         <div class="slds-grid" style="justify-content:space-between; vertical-align: baseline;">
             <div class="slds-x-small-size_1-of-4 slds-col">
                 <lightning-combobox
                         name="Price Books"
                         label="Price Books"
                         value={value}
-                        placeholder="Select Price Book"
+                        placeholder="Select Pricebook"
                         options={setOptions}
                         onchange={handleChange}
                 ></lightning-combobox>
             </div>
             <div class="slds-x-small-size_1-of-4 slds-col"></div>
-            <div class="slds-x-small-size_1-of-4 slds-col"></div>
-            <div id="navigation" class="slds-x-small-size_1-of-4 slds-col" style="margin-left: auto; margin-right: 0;">
+            <div class="slds-x-small-size_1-of-4 slds-col" style=" "></div>
+            <div class="slds-x-small-size_1-of-4 slds-col slds-align-right" style=" text-align: right; margin: auto 0 0 auto">
                 <lightning-button variant="brand" label="Add new pricebook" onclick={addNewPricebook} class="slds-m-around_small"></lightning-button>
-<!--                <lightning-button variant="brand" label="Add products to pricebook" class="slds-m-around_small" >Add products</lightning-button>-->
             </div>
         </div>
-        <c-hf-show-pricebook-table if:true={value} value={value} is-loaded={isLoaded}></c-hf-show-pricebook-table>
-        <c-hfaddpricebookmodal is-modal-open={isModalOpen} is-loaded={isLoaded}></c-hfaddpricebookmodal>
+        <c-hf-show-pricebook-table if:true={value} value={value} onmodalclosed= {getRefreshedTable} is-loaded={isLoaded} is-modal-open={isModalOpen}></c-hf-show-pricebook-table>
+        <c-hfaddpricebookmodal if:true= {isModalOpen} is-modal-open={isModalOpen} is-loaded={isLoaded} refreshed-pricebooks={refreshed} onmodalclosed={getAddPricebookModalFlag} ></c-hfaddpricebookmodal>
+
     </div>
     <div if:false={isLoaded}>
         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>

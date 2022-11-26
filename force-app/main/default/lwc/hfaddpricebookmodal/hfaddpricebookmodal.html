@@ -11,9 +11,9 @@
                             <span class="slds-assistive-text">Close</span>
                         </button>
                         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add new price book</h2>
-                    </header>
-<!--                    <lightning-spinner if:true={isLoading}></lightning-spinner>-->
 
+                    </header>
+                <div class="slds-card " style="border-radius:0; max-height:max-content">
                     <div class="slds-card" style="border-radius:0; padding:3%;">
                         <lightning-radio-group
                                 name="ProductType"
@@ -30,7 +30,8 @@
                             object-api-name="Pricebook2"
                             record-type-id={pickedType}
                             density="comfy"
-                            onsuccess={closeModalWithMessage}>
+                            onsuccess={closeModalWithMessage}
+                            onload={hideSpinner}>
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                             <div class="slds-grid">
                                     <div class="">
@@ -47,14 +48,19 @@
                                         </lightning-input-field>
                                         <lightning-input-field
                                                 field-name="Start_Date__c"
-                                                variant="">
+                                                variant=""
+                                                required
+                                                value={inputStart}
+                                                onchange={handleValidity}
+                                                class="startDate">
                                         </lightning-input-field>
                                         <lightning-input-field
                                                 field-name="End_Date__c"
-                                                variant="">
-                                        </lightning-input-field>
-                                        <lightning-input-field
-                                                field-name="IsActive">
+                                                variant=""
+                                                required
+                                                value={inputEnd}
+                                                onchange={handleValidity}
+                                                class="endDate">
                                         </lightning-input-field>
                                     </div>
                             </div>
@@ -62,10 +68,11 @@
 
                         <footer class="slds-modal__footer">
                             <button class="slds-button slds-button_neutral slds-m-around_small" type="reset" onclick={closeModal} title="Cancel" >Cancel</button>
-                            <lightning-button disabled={isAnyDataIncorrect} class="slds-m-around_small" label="OK" variant="brand" type="submit" title="OK" onclick= {closeModalWithMessage}>
+                            <lightning-button disabled={isAnyDataIncorrect} class="slds-m-around_small" label="OK" variant="brand" type="submit" title="OK">
                             </lightning-button>
                         </footer>
                     </lightning-record-edit-form>
+                </div>
 
                 </div>
             </section>

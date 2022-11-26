@@ -1,40 +1,20 @@
 import { LightningElement, wire, track, api } from 'lwc';
 import getPricebooks from '@salesforce/apex/HF_GetPricebooks.getPricebooks';
 import getPricebookEntries from '@salesforce/apex/HF_GetPricebooks.getPricebookEntries';
-import deletePricebook from '@salesforce/apex/HF_GetPricebooks.deletePricebook';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import { refreshApex } from '@salesforce/apex';
 import PRICEBOOK_OBJECT from '@salesforce/schema/Pricebook2';
 
-//const pricebookEntries = [];
-//const columns = [
-//    {
-//        label: 'Product',
-//        fieldName: 'PricebookEntryName',
-//        cellAttributes: { alignment: 'left' },
-//        editable: true
-//    },
-//     { label: 'Product Code', fieldName: 'ProductCode'},
-//     { label: 'Price', fieldName: 'UnitPrice' ,editable: true},
-//     { label: 'Is Active', fieldName: 'IsActive' ,editable: true, type : 'boolean' },
-//     { type: 'button-icon', initialWidth: 75,
-//           typeAttributes: {
-//               iconName: 'action:edit',
-//               title: 'Edit pricebook',
-//               variant: 'border-filled',
-//               alternativeText: 'Edit'
-//           }}
-//];
-//const value='';
 
 export default class Hfshowpricebooklist extends LightningElement {
-//    lookupIds = [];
     value='';
-
+    @track addProductClicked=false;
     b2bRecordType;
     b2cRecordType;
-    @api isLoaded = false
+    @track isLoaded = false
     @track data;
     @track isSuccess;
+    refreshed;
 
     get setOptions() {
         return [
@@ -43,20 +23,7 @@ export default class Hfshowpricebooklist extends LightningElement {
         ];
     }
 
-    @api isModalOpen = false;
-
-//    @wire (getPricebookEntries, {pricebookId : '$value'}) pricebookEntries (entries){
-//        if(entries.data){
-//            this.data = entries.data.map(row => {
-//                return {...row,PricebookEntryName : row.Product2.Name}
-//            })
-//            this.error=undefined;
-//        }
-//        else if (entries.error) {
-//             this.error = entries.error;
-//             this.data = undefined;
-//         }
-//    }
+    @track isModalOpen = false;
 
     @wire (getObjectInfo, {objectApiName : PRICEBOOK_OBJECT} )
              objectInfo({data,error}){
@@ -72,37 +39,41 @@ export default class Hfshowpricebooklist extends LightningElement {
                  }
               }
 
-//    columns=columns;
-    async pricebooksCallout(){
-//        getPricebooks()
-//            .then(result => {
-//                for (var i = 0; i<result.length; i++){
-//                    var pricebook = result[i];
-//                    this.setOptions.push({label: pricebook.Name, value: pricebook.Id});
-//
-//                }
-//                this.setOptions.sort((a,b)=> (a.label > b.label ? 1 : -1)) //For Ascending
-//                this.setOptions = JSON.parse(JSON.stringify(this.setOptions));
-//            });
-    }
 
     connectedCallback(){
-//        this.pricebooksCallout();
         this.isLoaded=true;
+    }
 
+    getRefreshedTable(event){
+        this.refreshed=event.detail;
+        console.log('refreshed values: '+this.refreshed);
+    }
+
+    getAddPricebookModalFlag(event){
+       this.isModalOpen=event.detail.value;
+       if(this.isModalOpen == false){
+           const sendCloseInfoEvent = new CustomEvent ( "modalclosed",{
+                          detail: this.isModalOpen
+                      });
+            this.dispatchEvent(sendCloseInfoEvent);
+       }
+//       refreshApex(refreshed);
     }
 
     handleChange(event) {
         this.value = event.detail.value;
     }
 
+//    handleRecordSavedRefresh(event){
+//        this.refreshed=event.detail;
+//        console.log(this.refreshed);
+//    }
+
     addNewPricebook(){
         this.openModal();
-    }
 
-//    refreshData(){
-////        return this.template;
-//    }
+
+    }
 
     openModal() {
         this.isModalOpen = true;

@@ -5,7 +5,6 @@ const pricebooks = [];
 const actions = [
     { label: 'Add products', name: 'add' },
     { label: 'Edit pricebook', name: 'edit' },
-    { label: 'Delete pricebook', name: 'delete' },
 ];
 const columns = [
      { label: 'Pricebook Name', fieldName: 'Name' },
@@ -34,102 +33,90 @@ const columns = [
         }},
      { label: 'Entries Type', fieldName: 'EntryType' },
      { label: 'Active', fieldName: 'IsActive' ,editable: true, type : 'boolean' },
-         {
-             type: 'action',
-             typeAttributes: { rowActions: actions },
-         }
-//      { type: 'button-icon', initialWidth: 75,
-//            typeAttributes: {
-//                iconName: 'utility:add',
-//                title: 'Add products to pricebook',
-//                variant: 'border-filled',
-//                alternativeText: 'Add products',
-//
-//            }},
-//     { type: 'button-icon', initialWidth: 75,
-//           typeAttributes: {
-//               iconName: 'action:edit',
-//               title: 'Edit pricebook',
-//               variant: 'border-filled',
-//               alternativeText: 'Edit pricebook'
-//           }},
-//       { type: 'button-icon', initialWidth: 75,
-//             typeAttributes: {
-//                 iconName: 'utility:delete',
-//                 title: 'Delete pricebook',
-//                 variant: 'border-filled',
-//                 alternativeText: 'Delete pricebook'
-//             }}
+     { type: 'action', typeAttributes: { rowActions: actions } }
 ];
+
 const value='';
 
 export default class HfShowPricebookTable extends LightningElement {
     @track data;
     @api value;
-    @api isLoaded=false;
+    @api row;
+    @api isModalOpen = false;
+    @track isLoaded=false;
+    @track addProductClicked=false;
+    @track editPricebookClicked=false;
+
     columns=columns;
     record = {};
+    @track editPricebookClickedTracked;
+    @api refreshedPricebooks;
 
     connectedCallback(){
         this.isLoaded=true;
     }
+
     @wire (getPricebooks, {recordTypeId : '$value'}) pricebooks (results){
+        this.refreshedPricebooks = results;
         if(results.data){
             this.data = results.data.map(row => {
                 return {...row,EntryType : row.RecordType.Name}
             });
-            this.data.sort((a,b)=> (a.Name > b.Name ? 1 : -1)) //For Ascending
+            this.data.sort((a,b)=> (a.Name > b.Name ? 1 : -1))
             this.error=undefined;
         }
         else if (results.error) {
              this.error = results.error;
              this.data = undefined;
          }
+
     }
 
     handleRowAction(event) {
-            const actionName = event.detail.action.name;
-            const row = event.detail.row;
-            switch (actionName) {
-                case 'delete':
-                    this.deleteRow(row);
-                    break;
-                case 'edit':
-                    this.showRowDetails(row);
-                    break;
-                case 'add':
-                    this.addProducts(row);
-                    break;
-                default:
-            }
+        const actionName = event.detail.action.name;
+        this.row = event.detail.row;
+        switch (actionName) {
+            case 'edit':
+                this.showRowDetails(this.row);
+                break;
+            case 'add':
+                this.addProducts(this.row);
+                break;
+            default:
         }
 
-    deleteRow(row) {
-        const { id } = row;
-        const index = this.findRowIndexById(id);
-        if (index !== -1) {
-            this.data = this.data
-                .slice(0, index)
-                .concat(this.data.slice(index + 1));
         }
+
+    sendRefreshedTable(event){
+        this.isModalOpen=false;
+        const sendCloseInfoEvent = new CustomEvent ( "modalclosed",{
+                     detail : this.refreshedPricebooks
+                 });
+         this.dispatchEvent(sendCloseInfoEvent);
     }
 
-    findRowIndexById(id) {
-        let ret = -1;
-        this.data.some((row, index) => {
-            if (row.id === id) {
-                ret = index;
-                return true;
-            }
-            return false;
-        });
-        return ret;
+    getAddProductModalFlag(event){
+       this.addProductClicked=false;
+    }
+
+    getEditModalFlag(event){
+       this.editPricebookClicked=false;
+    }
+
+    getOpenAddProductModalFlag(event){
+       this.addProductClicked = event.detail;
     }
 
     showRowDetails(row) {
         this.record = row;
-        console.log(JSON.stringify(this.record));
+        this.editPricebookClicked=true;
     }
+
+    addProducts(row){
+        this.addProductClicked=true;
+    }
+
+
 
 
 }

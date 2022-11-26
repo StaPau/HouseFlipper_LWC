@@ -2,21 +2,23 @@ import { LightningElement, track, api, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import PRICEBOOK_OBJECT from '@salesforce/schema/Pricebook2';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { refreshApex } from '@salesforce/apex';
+import checkIfInsertedDatesAreValid from '@salesforce/apex/HF_GetPricebooks.checkIfInsertedDatesAreValid'
+
 
 export default class Hfaddpricebookmodal extends LightningElement {
     @api isModalOpen;
-    @api isLoaded = false;
+    @track isLoaded = false;
     @api isSuccess;
-
+    @api refreshedPricebooks;
     @track inputName;
-
-
+    inputStart;
+    inputEnd;
     objectApiName;
     objectInfo;
     b2bRecordType;
     b2cRecordType;
     isBeingFilled=false;
-    isLoading = true;
     @track pickedType='';
     value=undefined;
     @wire (getObjectInfo, {objectApiName : PRICEBOOK_OBJECT} )
@@ -27,16 +29,15 @@ export default class Hfaddpricebookmodal extends LightningElement {
                      let b2cRecordType =  Object.keys(rtis).find(rti => rtis[rti].name === 'B2C');
                      this.b2bRecordType = b2bRecordType;
                      this.b2cRecordType = b2cRecordType;
-
                      }
              else if(error){
                  this.error = error;
              }
+
           }
 
-
-
     get options(){
+      this.isLoaded=true;
         return [
                     { label: 'B2B', value: this.b2bRecordType },
                     { label: 'B2C', value: this.b2cRecordType },
@@ -49,32 +50,61 @@ export default class Hfaddpricebookmodal extends LightningElement {
 
     closeModal() {
         this.isModalOpen = false;
+        const sendCloseInfoEvent = new CustomEvent ( "modalclosed",{
+                       detail: this.isModalOpen
+                   });
+         this.dispatchEvent(sendCloseInfoEvent);
     }
 
     handleChange(event){
         const selectedOption = event.detail.value;
         this.pickedType = selectedOption;
+
     }
 
-    async closeModalWithMessage(){
+    hideSpinner(){
+        this.isLoaded=false;
+    }
+    closeModalWithMessage(){
         this.isModalOpen = false;
+        refreshApex(this.refreshedPricebooks);
         const evt = new ShowToastEvent({
                     title: 'Success',
-                    message: 'Price book has been saved successfully.',
+                    message: 'Pricebook has been saved successfully.',
                     variant: 'success',
                     mode: 'pester'
                 });
+        const sendCloseInfoEvent = new CustomEvent ( "modalclosed",{
+            detail: this.isModalOpen
+        });
+         this.dispatchEvent(sendCloseInfoEvent);
         this.dispatchEvent(evt);
-        console.log('isModalOpen: '+this.isModalOpen);
-        //TODO: refresh parent here
-          this.dispatchEvent(
-                new CustomEvent('recordsaved')
-          );
-
     }
 
-     get isAnyDataIncorrect(){
-        return (this.pickedType == '' || this.isBeingFilled == false );
+    get isAnyDataIncorrect(){
+        return (this.pickedType == '' || this.isBeingFilled == false || this.areDatesValid == false || this.inputStart == null || this.inputEnd == null );
+    }
+
+    areDatesValid=true;
+
+    handleValidity(){
+        this.inputStart = this.template.querySelector('.startDate').value;
+        this.inputEnd = this.template.querySelector('.endDate').value;
+       checkIfInsertedDatesAreValid({startDate : this.inputStart, endDate : this.inputEnd, recordTypeId : this.pickedType})
+           .then(result => {
+                if(result != ''){
+                    this.areDatesValid=false;
+                    const evt = new ShowToastEvent({
+                               title: 'Error',
+                               message: 'Dates incorrect! '+result,
+                               variant: 'error'
+                           });
+                    this.dispatchEvent(evt);
+                }
+                else{
+                    this.areDatesValid=true;
+                }
+           });
     }
 
     setAsFilled(event){
@@ -86,7 +116,5 @@ export default class Hfaddpricebookmodal extends LightningElement {
             this.isBeingFilled=true;
         }
     }
-
-
 
 }
