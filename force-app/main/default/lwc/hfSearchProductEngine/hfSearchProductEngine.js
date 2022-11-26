@@ -14,8 +14,8 @@ export default class HfSearchProductEngine extends LightningElement {
             ];
     }
     handleKeyUp(evt) {
-        const isEnterKey = evt.keyCode === 13;
-        if (isEnterKey) {
+        const isEnterKey = evt.keyCode;
+        if (isEnterKey == 13) {
             this.queryTerm = evt.target.value;
         }
     }
