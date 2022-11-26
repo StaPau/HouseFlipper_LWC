@@ -1,0 +1,68 @@
+.rounded{
+    border-radius: 10px;
+}
+
+.noLinkStyle{
+     text-decoration: none;
+     color: inherit;
+}
+
+.staticImageHeight{
+     object-fit: cover;
+}
+
+.slider{
+    width: 200px;
+    height: 150px;
+    text-align: center;
+    border-radius: 20px;
+    overflow: hidden;
+    object-fit:cover;
+}
+
+.title{
+    text-align: center;
+    font-weight: 700;
+}
+
+.item{
+      opacity: 1;
+    transition: opacity .2s ease-in-out, box-shadow .2s ease-in-out;
+}
+.item:hover{
+    opacity: 0.8;
+}
+
+.mainPhoto{
+    height:400px;
+    width:100%;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+
+.arrows{
+   width: 30px;
+   height: 30px;
+   border-color: grey;
+   color:grey;
+   position: absolute;
+   top: 30%;
+   margin-top: 5%;
+   margin-left: 3%;
+   margin-right: 3%;
+}
+
+.prev{
+   border-bottom: 6px solid;
+   border-left: 6px solid;
+   transform: rotate(45deg);
+   left: 10px;
+}
+
+.next{
+   border-bottom: 6px solid;
+   border-left: 6px solid;
+   transform: rotate(-135deg);
+   right: 10px;
+   }

@@ -1,0 +1,21 @@
+<template>
+    <template if:false={data}>
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <c-hf-show-add-pricebook-entries-modal if:true={addProductClicked} add-product-clicked={addProductClicked}
+                                           row={row} value={row.RecordType.Id} onmodalclosed={getAddProductModalFlag}></c-hf-show-add-pricebook-entries-modal>
+    <c-hf-show-edit-pricebook-modal if:true={editPricebookClicked} edit-pricebook-clicked={editPricebookClicked} row={row}
+                                    refreshed-pricebooks={refreshedPricebooks}
+                                    onmodalclosed={getEditModalFlag}></c-hf-show-edit-pricebook-modal>
+    <div style="height:75%; max-height: max-content; padding-top:2%">
+        Existing pricebooks:
+            <lightning-datatable
+                    key-field="id"
+                    columns={columns}
+                    data={data}
+                    onrowaction={handleRowAction}
+                    enable-infinite-loading
+                    >
+            </lightning-datatable>
+    </div>
+</template>
