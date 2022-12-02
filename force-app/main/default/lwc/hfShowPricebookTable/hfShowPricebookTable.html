@@ -1,14 +1,25 @@
 <template>
     <template if:false={data}>
-            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            <lightning-spinner alternative-text={label.Loading} size="large"></lightning-spinner>
     </template>
     <c-hf-show-add-pricebook-entries-modal if:true={addProductClicked} add-product-clicked={addProductClicked}
-                                           row={row} value={row.RecordType.Id} onmodalclosed={getAddProductModalFlag}></c-hf-show-add-pricebook-entries-modal>
+                                           row={row} onmodalclosed={getAddProductModalFlag} 
+                                           refreshed-pricebooks={refreshedPricebooks} value={value}
+                                           onproductsaddition={getProductsAddedFlag}
+                                           ></c-hf-show-add-pricebook-entries-modal>
     <c-hf-show-edit-pricebook-modal if:true={editPricebookClicked} edit-pricebook-clicked={editPricebookClicked} row={row}
-                                    refreshed-pricebooks={refreshedPricebooks}
+                                    refreshed-pricebooks={refreshedPricebooks} value={row.RecordTypeId}
                                     onmodalclosed={getEditModalFlag}></c-hf-show-edit-pricebook-modal>
-    <div style="height:75%; max-height: max-content; padding-top:2%">
-        Existing pricebooks:
+
+        <c-hfaddpricebookmodal if:true={isModalOpen} is-modal-open={isModalOpen} 
+                                    refreshed-pricebooks={refreshedPricebooks} onmodalclosed={getAddPricebookModalFlag} ></c-hfaddpricebookmodal>
+                                    
+        <c-hf-show-pricebook-entries if:true={viewProductsClicked} view-products-clicked={viewProductsClicked} row={row}
+                                    refreshed-pricebooks={refreshedPricebooks} value={row.RecordTypeId}
+                                    onmodalclosed={getViewModalFlag} onproductsaddition={getRefreshedPricebookEntries}
+                                    are-products-added={areProductsAdded}></c-hf-show-pricebook-entries>
+
+        <div style="height:75%; max-height: 750px; padding-top:2%">
             <lightning-datatable
                     key-field="id"
                     columns={columns}

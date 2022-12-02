@@ -32,5 +32,14 @@
         <members>*</members>
         <name>StaticResource</name>
     </types>
+    <types>
+        <members>*</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Pricebook2.Start_Date__c</members>
+        <members>Pricebook2.End_Date__c</members>
+        <name>CustomField</name>
+    </types>
     <version>55.0</version>
 </Package>

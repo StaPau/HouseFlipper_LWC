@@ -3,14 +3,14 @@
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title={label.Close} onclick={closeModal}>
                         <lightning-icon icon-name="utility:close"
-                                        alternative-text="close"
+                                        alternative-text={label.Close}
                                         variant="inverse"
                                         size="small" ></lightning-icon>
-                        <span class="slds-assistive-text">Close</span>
+                        <span class="slds-assistive-text">{label.Close}</span>
                     </button>
-                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit pricebook</h2>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.Edit_pricebook}</h2>
                 </header>
                 <lightning-record-edit-form
                         object-api-name="Pricebook2"
@@ -56,8 +56,8 @@
                     </div>
 
                     <footer class="slds-modal__footer">
-                        <button class="slds-button slds-button_neutral slds-m-around_small" type="reset" onclick={closeModal} title="Cancel" >Cancel</button>
-                        <lightning-button disabled={isAnyDataIncorrect} class="slds-m-around_small" label="OK" variant="brand" type="submit" title="OK" onclick={handleChange}>
+                        <button class="slds-button slds-button_neutral slds-m-around_small" type="reset" onclick={closeModal} title={label.Cancel} >{label.Cancel}</button>
+                        <lightning-button disabled={isAnyDataIncorrect} class="slds-m-around_small" label={label.OK} variant="brand" type="submit" title={label.OK}>
                         </lightning-button>
                     </footer>
                 </lightning-record-edit-form>

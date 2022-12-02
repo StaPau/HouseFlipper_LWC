@@ -1,10 +1,13 @@
-import { LightningElement, wire, track, api } from 'lwc';
-import getPricebooks from '@salesforce/apex/HF_GetPricebooks.getPricebooks';
-import getPricebookEntries from '@salesforce/apex/HF_GetPricebooks.getPricebookEntries';
+import { LightningElement, wire, track } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { refreshApex } from '@salesforce/apex';
 import PRICEBOOK_OBJECT from '@salesforce/schema/Pricebook2';
-
+import Add_new_pricebook from '@salesforce/label/c.Add_new_pricebook';
+import Pricebooks from '@salesforce/label/c.Pricebooks';
+import Select_Pricebook from '@salesforce/label/c.Select_Pricebook';
+import B2B from '@salesforce/label/c.B2B';
+import B2C from '@salesforce/label/c.B2C';
+import Loading from '@salesforce/label/c.Loading';
 
 export default class Hfshowpricebooklist extends LightningElement {
     value='';
@@ -15,11 +18,18 @@ export default class Hfshowpricebooklist extends LightningElement {
     @track data;
     @track isSuccess;
     refreshed;
-
+    label = {
+        Add_new_pricebook,
+        Pricebooks,
+        Select_Pricebook,
+        B2B,
+        B2C,
+        Loading
+    }
     get setOptions() {
         return [
-            {label: 'B2B', value: this.b2bRecordType},
-            {label: 'B2C', value: this.b2cRecordType}
+            {label: this.label.B2B, value: this.b2bRecordType},
+            {label: this.label.B2C, value: this.b2cRecordType}
         ];
     }
 
@@ -36,6 +46,12 @@ export default class Hfshowpricebooklist extends LightningElement {
                          }
                  else if(error){
                      this.error = error;
+                    const evt = new ShowToastEvent({
+                        title: this.label.Error,
+                        message: error.body.message,
+                        variant: 'error'
+                    });
+                    this.dispatchEvent(evt);
                  }
               }
 
@@ -46,36 +62,22 @@ export default class Hfshowpricebooklist extends LightningElement {
 
     getRefreshedTable(event){
         this.refreshed=event.detail;
-        console.log('refreshed values: '+this.refreshed);
+        this.isModalOpen=false;
     }
 
     getAddPricebookModalFlag(event){
-       this.isModalOpen=event.detail.value;
-       if(this.isModalOpen == false){
-           const sendCloseInfoEvent = new CustomEvent ( "modalclosed",{
-                          detail: this.isModalOpen
-                      });
-            this.dispatchEvent(sendCloseInfoEvent);
-       }
-//       refreshApex(refreshed);
+        this.refreshed=event.detail;
+
+        this.isModalOpen=false;
+        refreshApex(this.refreshed);
     }
 
     handleChange(event) {
         this.value = event.detail.value;
     }
 
-//    handleRecordSavedRefresh(event){
-//        this.refreshed=event.detail;
-//        console.log(this.refreshed);
-//    }
 
     addNewPricebook(){
-        this.openModal();
-
-
-    }
-
-    openModal() {
         this.isModalOpen = true;
     }
 

@@ -1,0 +1,32 @@
+<apex:page>
+    <html>
+        <style>
+            .grid-container {
+              display: grid;
+              grid-template-columns: auto auto auto;
+              background-color: #2196F3;
+              padding: 10px;
+            }
+            .grid-item {
+              background-color: rgba(255, 255, 255, 0.8);
+              border: 1px solid rgba(0, 0, 0, 0.8);
+              padding: 20px;
+              font-size: 30px;
+              text-align: center;
+            }
+            </style>
+        <body>
+            <p>Dear {!recipient.FirstName},</p>
+            <p>Below is a list of suggested properties.</p>
+            <div class="grid-container">
+                <apex:repeat var="quoteLineItem" value="{!relatedTo.QuoteLineItems}">
+                    <div class= "grid-item"> 
+                        <p> {!quoteLineItem.Product2.Name}: {!quoteLineItem.TotalPrice} </p>
+                        <p> </p>
+                    <apex:image value="{!quoteLineItem.Product2.DisplayURL}"/>
+                    </div>
+                </apex:repeat>
+            </div>
+        </body>
+    </html>
+</apex:page>

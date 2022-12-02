@@ -2,15 +2,33 @@ import { LightningElement,wire,api,track } from 'lwc';
 import contentImages from  '@salesforce/apex/HF_GalleryProductService.contentImages';
 import setMainImage from  '@salesforce/apex/HF_GalleryProductService.setMainImage';
 import MAIN_IMAGE from '@salesforce/schema/Product2.Main_Image__c';
-import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import Close from '@salesforce/label/c.Close';
+import Set_as_Main_Image from '@salesforce/label/c.Set_as_Main_Image';
+import Loading from '@salesforce/label/c.Loading';
+import Previous from '@salesforce/label/c.Previous';
+import Next from '@salesforce/label/c.Next';
+import Success from '@salesforce/label/c.Success';
+import Cancel from '@salesforce/label/c.Cancel';
+import Main_image_updated from '@salesforce/label/c.Main_image_updated';
+
 
 const fields = [MAIN_IMAGE];
 
 export default class HfPhotoGalleryProduct extends LightningElement {
 
     @wire(getRecord, { recordId: '$recordId', fields }) product;
-
+    label = {
+        Close,
+        Set_as_Main_Image,
+        Loading,
+        Previous,
+        Next,
+        Success,
+        Main_image_updated,  
+        Cancel
+    }
     isLoaded = false;
     imageMain;
 
@@ -40,9 +58,16 @@ export default class HfPhotoGalleryProduct extends LightningElement {
     getDocuments() {
         contentImages({recordId: this.recordId})
             .then(result => {
-                console.log(result);
                 this.wiredContentImages = result;
-            });
+            })
+            .catch(error => {
+                const evt = new ShowToastEvent({
+                    title: this.label.Error,
+                    message: error.body.message,
+                    variant: 'error'
+                });
+                this.dispatchEvent(evt);
+           })
     }
 
     clickedImageId;
@@ -67,6 +92,13 @@ export default class HfPhotoGalleryProduct extends LightningElement {
         })
         this.imageMain = this.clickedImageId;
         this.isShowModal = false;
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: this.label.Success,
+                message: this.label.Main_image_updated,
+                variant: 'success'
+            })
+        );
     }
 
     get wiredCon() {

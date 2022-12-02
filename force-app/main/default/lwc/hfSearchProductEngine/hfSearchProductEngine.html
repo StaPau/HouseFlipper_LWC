@@ -1,20 +1,62 @@
 <template>
     <lightning-card>
-        <div onkeyup={handleKeyUp} class="slds-m-around_large" style="margin: 0 auto; width:60%; margin-bottom: 2%;">
-            <lightning-input
-                    name="enter-search"
-                    label="Type in product name"
-                    type="search"
-                    value={searchValue}
-                    placeholder="Search products..."
-            ></lightning-input>
-        </div>
-        <template if:true={isUserB2B}>
-            <lightning-radio-group label="Has open space?"
-                                   options={options}>
-
-            </lightning-radio-group>
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text={label.Loading} size="large"></lightning-spinner>
         </template>
+        <div class="slds-grid" style="width:50%; margin: 0 auto; margin-top:3%; margin-left:30%; margin-bottom:5%;">
+            <div class="filter">
+                <lightning-checkbox-group name="Add filters"
+                                    label={label.Add_filters}
+                                    options={options}
+                                    value={value}
+                                    onchange={handleChange}>
+                </lightning-checkbox-group>
+            </div>
+            <div onkeyup={handleKeyUp} class="slds-m-around_large slds-col" style="margin: 0 auto; width:40%; margin-bottom: 3%; padding-right:2%; ">
+                <lightning-input
+                        name="enter-search"
+                        label={label.Type_in_product_name}
+                        type="search"
+                        value={searchValue}
+                        placeholder={label.Search_products}
+                        onchange={handleInputChange}
+                ></lightning-input>
+            </div>
+            <div class="slds-col" style=" width: max-content; vertical-align:center; margin-top:2.5%">
+                <lightning-button label={label.Search} variant="brand" onclick={handleSearch}></lightning-button>
+            </div>
+        </div>
+        <div style="margin: 0 auto; margin-bottom:3%;">
+            <template if:true={searchResults}>
+                <template for:each={searchResults} for:item="result">
+                    <div key={result.Id} class="searchResult slds-grid" style="">
+                        <div class="slds-col">
+                            <img key={result.Id} class=" resultImage slds-item_detail slds-truncate"
+                            src={result.Main_Image__c}/>
+
+                        </div>
+                        <div class="slds-col" style="width:70%">
+                            <p key={result.Id} style="font-size: 30px">{result.Name}</p>
+                            <div class="slds-grid">
+                                <div key={result.Id} if:true={result.Has_Anti_Theft_Door__c} class="property slds-col">{label.Anti_Theft_Door}</div>
+                                <div key={result.Id} if:true={result.Has_Basement__c} class="property slds-col">{label.Basement}</div>
+                                <div key={result.Id} if:true={result.Has_Garage__c} class="property slds-col">{label.Garage}</div>
+                                <div key={result.Id} if:true={result.Has_Mortgage__c} class="property slds-col">{label.Mortgage}</div>
+                                <div key={result.Id} if:true={result.Has_Swimming_Pool__c} class="property slds-col">{label.Swimming_Pool}</div>
+                                <div key={result.Id} if:true={result.Has_Openspace__c} class="property slds-col">{label.Openspace}</div>
+                                <div key={result.Id} if:true={result.Has_Own_Bathroom__c} class="property slds-col">{label.Own_Bathroom}</div>
+                                <div key={result.Id} if:true={result.Has_Parking_Lots__c} class="property slds-col">{label.Parking_Lots}</div>
+                                <div key={result.Id} if:true={result.Has_Shop_Window__c} class="property slds-col">{label.Shop_Window}</div>
+                                <div key={result.Id} if:true={result.Has_Storage_Room__c} class="property slds-col">{label.Storage_Room}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+            </template>
+        </div>
+            
+            
     </lightning-card>
 
 </template>

@@ -46,20 +46,20 @@ public with sharing class HF_GetPricebooksTest {
         pbe.Id = product.Id;
 
         pbeList.add(pbe);
-        System.debug(pbeList);
+
         Test.startTest();
         List<PricebookEntry> testPricebookEntry = HF_GetPricebooks.addPricebookEntries(pbeList,pricebook[1].Id);
         Test.stopTest();
 
         List<PricebookEntry> allPricebookEntries = [SELECT Id, Name FROM PricebookEntry WHERE Pricebook2Id = :pricebook[1].Id];
-        System.debug(allPricebookEntries);
+
         System.assertEquals(3,allPricebookEntries.size());
     }
 
     @IsTest
     static void shouldReturnMessageAboutStartDateHigherThanEndDate(){
-        Datetime startDate = Datetime.parse('11/23/2022, 10:00 AM');
-        Datetime endDate = Datetime.parse('11/21/2022, 10:00 AM');
+        Datetime startDate = Datetime.parse('2022-11-23 10:00:00');
+        Datetime endDate = Datetime.parse('2022-11-21 10:00:00');
         String pricebookRecordTypeId = Schema.SObjectType.Pricebook2.getRecordTypeInfosByName().get('B2B').getRecordTypeId();
         String message;
 
@@ -72,8 +72,8 @@ public with sharing class HF_GetPricebooksTest {
 
     @IsTest
     static void shouldReturnMessageAboutOverlapping(){
-        Datetime startDate = Datetime.parse('11/23/2022, 09:00 AM');
-        Datetime endDate = Datetime.parse('11/25/2022, 10:00 AM');
+        Datetime startDate = Datetime.parse('2022-11-23 09:00:00');
+        Datetime endDate = Datetime.parse('2022-11-25 10:00:00');
         String pricebookRecordTypeId = Schema.SObjectType.Pricebook2.getRecordTypeInfosByName().get('B2B').getRecordTypeId();
         String message;
 
@@ -92,8 +92,8 @@ public with sharing class HF_GetPricebooksTest {
         Pricebook2 pricebook = new Pricebook2();
         pricebook.Name='Testing pricebook';
         pricebook.RecordTypeId= Schema.SObjectType.Pricebook2.getRecordTypeInfosByName().get('B2B').getRecordTypeId();
-        pricebook.Start_Date__c=Datetime.parse('11/23/2022, 10:00 AM');
-        pricebook.End_Date__c=Datetime.parse('11/30/2022, 10:00 AM');
+        pricebook.Start_Date__c=Datetime.parse('2022-11-23 10:00:00');
+        pricebook.End_Date__c=Datetime.parse('2022-11-30 10:00:00');
         pricebook.IsActive=true;
 
         insert pricebook;

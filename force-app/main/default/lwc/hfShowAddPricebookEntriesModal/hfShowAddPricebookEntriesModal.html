@@ -3,63 +3,68 @@
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title={label.Close} onclick={closeModal}>
                         <lightning-icon icon-name="utility:close"
-                                        alternative-text="close"
+                                        alternative-text={label.Close}
                                         variant="inverse"
                                         size="small" ></lightning-icon>
-                        <span class="slds-assistive-text">Close</span>
+                        <span class="slds-assistive-text">{label.Close}</span>
                     </button>
-                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add products to pricebook</h2>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.Add_Products_to_pricebook}</h2>
                 </header>
-                <lightning-card if:true={firstPage} title="Add products">
+                <lightning-card if:true={firstPage} title={label.Add_Products}>
                     <div class="slds-p-around_small slds-m-around_medium">
                         <lightning-dual-listbox name="products"
-                                                label="Products"
-                                                source-label="Available"
-                                                selected-label="Selected"
-                                                field-level-help="Add particular products to pricebook"
+                                                label={label.Products}
+                                                source-label={label.Available}
+                                                selected-label={label.Selected}
+                                                field-level-help={label.Add_Products_Info}
                                                 options={options}
                                                 onchange={handleChange}></lightning-dual-listbox>
                         <br/>
 
                     </div>
                     <footer class="slds-modal__footer">
-                        <button class="slds-button slds-button_neutral slds-m-around_small" type="reset" onclick={closeModal} title="Cancel" >Cancel</button>
-                        <lightning-button disabled={ifSelectedIsEmpty} class="slds-m-around_small" label="Next" variant="brand" type="button" title="Next" onclick={goToAnotherModalPage}>
+                        <button class="slds-button slds-button_neutral slds-m-around_small" type="reset" onclick={closeModal} title={label.Cancel} >{label.Cancel}</button>
+                        <lightning-button disabled={ifSelectedIsEmpty} class="slds-m-around_small" label={label.Next} variant="brand" type="button" title={label.Next} onclick={goToAnotherModalPage}>
                         </lightning-button>
                     </footer>
                 </lightning-card>
-                <lightning-card if:true={secondPage} title="Browse products">
+                <lightning-card if:true={secondPage} title={label.Browse_products}>
                     <div class="slds-m-around_medium">
-                        <h2>Pick products to change their price</h2>
+                        <h2>{label.Pick_products_title}</h2>
                         <lightning-datatable
                                 key-field="id"
                                 columns={columns}
-                                data={data}>
+                                data={data}
+                                onrowselection={addToList}>
                         </lightning-datatable>
+                        <template if:false={IsListEmpty}>
                         <lightning-radio-group name="group"
-                                               label="Pick price change type:"
+                                               label={label.Pick_price_change_type}
                                                options={priceChangeOptions}
                                                value={pickedPriceChangeType}
                                                 onchange={handlePriceChange}
                                                type="radio"
+                                               disabled={IsListEmpty}
                         >
                         </lightning-radio-group>
-                        <lightning-input label="Input price change"
+                        <lightning-input label={label.Input_price_change}
                                          type="number"
-                                         placeholder="e.g. 20"
+                                         placeholder={label.Input_price_change_placeholder}
                                          value={discount}
-                                         onchange={handleDiscountInput}>
+                                         onchange={handleDiscountInput}
+                                         disabled={IsListEmpty}>
                         </lightning-input>
+                    </template>
                     </div>
                     <footer class="slds-modal__footer">
-                        <button class="slds-button slds-button_neutral slds-m-around_small" type="button" onclick={goBack} title="Back" >Back</button>
-                        <lightning-button disabled={isAnyDataIncorrect} class="slds-m-around_small" label="Next" variant="brand" type="button" title="Next" onclick={goToSummaryPage}>
+                        <button class="slds-button slds-button_neutral slds-m-around_small" type="button" onclick={goBack} title={label.Next} >{label.Next}</button>
+                        <lightning-button disabled={isAnyDataIncorrect} class="slds-m-around_small" label={label.Next} variant="brand" type="button" title={label.Next} onclick={goToSummaryPage}>
                         </lightning-button>
                     </footer>
                 </lightning-card>
-                <lightning-card if:true={thirdPage} title="Summary">
+                <lightning-card if:true={thirdPage} title={label.Summary}>
                     <div class="slds-m-around_medium">
                         <lightning-datatable
                                 key-field="id"
@@ -69,7 +74,7 @@
                     </div>
                     <footer class="slds-modal__footer">
                         <button class="slds-button slds-button_neutral slds-m-around_small" type="button" onclick={goBackToPriceChange} title="Back" >Back</button>
-                        <lightning-button class="slds-m-around_small" label="Done" variant="brand" type="button" title="Done" onclick={handleDoneButton}>
+                        <lightning-button class="slds-m-around_small" label={label.Done} variant="brand" type="button" title={label.Done} onclick={handleDoneButton}>
                         </lightning-button>
                     </footer>
                 </lightning-card>

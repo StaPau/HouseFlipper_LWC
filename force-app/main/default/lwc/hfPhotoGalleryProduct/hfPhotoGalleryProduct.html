@@ -5,9 +5,9 @@
             <div class="modalRecordType slds-modal__container">
                 <header class="slds-modal__header">
                     <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                            title="Close" onclick={hideModal}>
+                            title={label.Close} onclick={hideModal}>
                         <lightning-icon icon-name="utility:close"
-                                        alternative-text="close"
+                                        alternative-text={label.Close}
                                         variant="inverse"
                                         size="small"></lightning-icon>
                         <span class="slds-assistive-text">Close</span>
@@ -17,9 +17,9 @@
                     <img src={clickedImageId} class="clickedImage"/>
                 </div>
                 <footer class="slds-modal__footer">
-                    <lightning-button variant="neutral" label="Cancel"
+                    <lightning-button variant="neutral" label={label.Cancel}
                                       onclick={hideModal}></lightning-button>
-                    <lightning-button variant="brand" label="Set As Main Photo" onclick={setMainPhoto}
+                    <lightning-button variant="brand" label={label.Set_as_Main_Image} onclick={setMainPhoto}
 
                     ></lightning-button>
                 </footer>
@@ -40,12 +40,12 @@
             <template if:true={wiredContentImages}>
                 <div if:true={isLoaded}>
                     <lightning-spinner
-                            alternative-text="Loading..." variant="">
+                            alternative-text={label.Loading} variant="">
                     </lightning-spinner>
                 </div>
                 <div class="slds-grid slds-gutters slds-m-around_large" style="overflow:hidden; margin-left:10%; margin-right:10%;">
                     <template for:each={wiredCon} for:item="img">
-                        <a class="noLinkStyle" onclick={goPrev} title="Previous" key={img.contentDocumentId}>
+                        <a class="noLinkStyle" onclick={goPrev} title={label.Previous} key={img.contentDocumentId}>
                             <div class="arrows prev"></div>
                         </a>
                         <div class="slds-col slds-x-small-size_1-of-3" key={img.contentDocumentId}>
@@ -58,7 +58,7 @@
                                 </div>
                             </a>
                         </div>
-                        <a class="noLinkStyle" onclick={goNext} title="Next" key={img.contentDocumentId}>
+                        <a class="noLinkStyle" onclick={goNext} title={label.Next} key={img.contentDocumentId}>
                             <div class="arrows next "></div>
                         </a>
                     </template>

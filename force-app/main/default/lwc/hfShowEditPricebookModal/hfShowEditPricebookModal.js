@@ -1,7 +1,15 @@
-import { LightningElement,api,track } from 'lwc';
+import { LightningElement,api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
-import checkIfInsertedDatesAreValid from '@salesforce/apex/HF_GetPricebooks.checkIfInsertedDatesAreValid'
+import checkIfInsertedDatesAreValid from '@salesforce/apex/HF_GetPricebooks.checkIfInsertedDatesAreValid';
+import Success from '@salesforce/label/c.Success';
+import Close from '@salesforce/label/c.Close';
+import Cancel from '@salesforce/label/c.Cancel';
+import OK from '@salesforce/label/c.OK';
+import Edit_pricebook from '@salesforce/label/c.Edit_pricebook'
+import Dates_incorrect from '@salesforce/label/c.Dates_incorrect';
+import Pricebook_saved from '@salesforce/label/c.Pricebook_saved';
+import Error from '@salesforce/label/c.Error';
 
 export default class HfShowEditPricebookModal extends LightningElement {
     @api row;
@@ -13,8 +21,18 @@ export default class HfShowEditPricebookModal extends LightningElement {
     inputEnd;
     isBeingFilled;
 
+    label={
+        Close,
+        Edit_pricebook,
+        Cancel,
+        OK,
+        Dates_incorrect,
+        Pricebook_saved,
+        Success,
+        Error
+    }
     get isAnyDataIncorrect(){
-        return (this.isBeingFilled == false || this.areDatesValid == false || this.inputStart == null || this.inputEnd == null);
+        return (this.isBeingFilled == false || this.areDatesValid == false);
     }
 
     setAsFilled(event){
@@ -41,19 +59,20 @@ export default class HfShowEditPricebookModal extends LightningElement {
         this.inputEnd = this.template.querySelector('.endDate').value;
        checkIfInsertedDatesAreValid({startDate : this.inputStart, endDate : this.inputEnd, recordTypeId : this.row.RecordTypeId})
            .then(result => {
-               console.log(result);
                 if(result != ''){
                     this.areDatesValid=false;
-                    const evt = new ShowToastEvent({
-                               title: 'Error',
-                               message: 'Dates incorrect! '+result,
-                               variant: 'error'
-                           });
-                    this.dispatchEvent(evt);
                 }
                 else{
                     this.areDatesValid=true;
                 }
+           })
+           .catch(error => {
+            const evt = new ShowToastEvent({
+                title: this.label.Error,
+                message: this.label.Dates_incorrect+' '+error.body.message,
+                variant: 'error'
+            });
+            this.dispatchEvent(evt);
            });
     }
 
@@ -73,14 +92,14 @@ export default class HfShowEditPricebookModal extends LightningElement {
         this.closeClicked = true;
         refreshApex(this.refreshedPricebooks);
         const evt = new ShowToastEvent({
-                    title: 'Success',
-                    message: 'Pricebook has been saved successfully.',
+                    title: this.label.Success,
+                    message: this.label.Pricebook_saved,
                     variant: 'success',
                     mode: 'pester'
                 });
-         const sendCloseInfoEvent = new CustomEvent ( "modalclosed",{
-             detail : this.closeClicked
-         });
+        const sendCloseInfoEvent = new CustomEvent ( "modalclosed",{
+            detail : this.closeClicked
+        });
          this.dispatchEvent(sendCloseInfoEvent);
         this.dispatchEvent(evt);
     }

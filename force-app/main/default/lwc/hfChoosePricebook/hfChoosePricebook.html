@@ -1,0 +1,29 @@
+<template>
+    <template if:false={options}>
+        <lightning-spinner alternative-text={label.Loading} size="large"></lightning-spinner>
+    </template>
+
+    <template if:true={areOptionsFilled}>
+        <lightning-combobox
+                        name="Pricebooks"
+                        label={label.Available_Pricebooks}
+                        value={value}
+                        placeholder={label.Select_Pricebook}
+                        options={options}
+                        onchange={handleChange}
+        ></lightning-combobox>
+    </template>
+
+    <template if:true={pricebookData}>
+        <div style="height:300px; max-height:max-content; " class="slds-scrollable slds-m-vertical_medium">
+            <lightning-datatable
+                key-field="id"
+                columns={columns}
+                data={pricebookData}
+                onrowselection={getSelected}>
+            </lightning-datatable>
+        </div>
+    </template>
+
+
+</template>
